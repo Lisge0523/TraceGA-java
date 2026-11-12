@@ -27,22 +27,28 @@ TraceGA 事件分析平台服务端的 **Java / Spring Boot 重写实现**。原
 
 ## 快速开始
 
-前置：JDK 21、MySQL 8、Maven 3.9+（没有 Maven 可以 `winget install Apache.Maven`，或直接用 IDEA 自带的）。
+前置：JDK 21、MySQL 8、Maven 3.9+（没有 Maven 可以 `winget install Apache.Maven`）。
 
 ```bash
-# 1. 建库并导入表结构（schema 来自原项目 prisma/schema.prisma）
-mysql -uroot -p -e "CREATE DATABASE IF NOT EXISTS tracega DEFAULT CHARSET utf8mb4"
-mysql -uroot -p tracega < src/main/resources/db/schema.sql   # 见下方「待办」
+# 1. 建库并导入表结构（6 张表，已在 src/main/resources/db/schema.sql）
+mysql -uroot -p -e "CREATE DATABASE IF NOT EXISTS tracega_java DEFAULT CHARSET utf8mb4"
+mysql -uroot -p tracega_java -e "source src/main/resources/db/schema.sql"
 
-# 2. 配置连接（默认连 127.0.0.1:3306/tracega，root 空密码）
-export DB_USER=root
-export DB_PASSWORD=你的密码
+# 2. 配置连接（默认 127.0.0.1:3306/tracega_java）
+#    Windows PowerShell:
+$env:DB_USER='root'; $env:DB_PASSWORD='你的密码'
+#    macOS / Linux:
+export DB_USER=root DB_PASSWORD=你的密码
 
 # 3. 启动，端口 3000 —— 与原 NestJS 服务一致，前端无需改动
 mvn spring-boot:run
 
 # 4. 验证
-curl http://127.0.0.1:3000/actuator/health
+curl http://127.0.0.1:3000/actuator/health    # {"status":"UP"}
+curl http://127.0.0.1:3000/swagger-ui.html
+```
+
+> 注意：PowerShell 不支持 `<` 重定向，导入必须用 `-e "source ..."` 的写法。
 ```
 
 ## 进度

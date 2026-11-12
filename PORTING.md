@@ -1,15 +1,19 @@
-﻿# PORTING —— 模块迁移对照表
+# PORTING —— 模块迁移对照表
 
 基准：`Lisge0523/TraceGA@3db7ee2`，`packages/trace-server/src`（89 个 .ts，40 个 HTTP 接口）。
 
-## 0. 先导出表结构（一次性）
+## 0. 表结构（已完成 ✅）
 
-```bash
-cd TraceGA/packages/trace-server
-npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > ../../java-server/src/main/resources/db/schema.sql
-```
+原项目用 `prisma db push` 建库，**没有 migrations 目录**，所以 `prisma migrate diff` 那条路走不通（引擎会报 EPERM / 需要联网）。
+这里改为按 `prisma/schema.prisma` 手写等价 DDL，已落到 `src/main/resources/db/schema.sql`：
 
-导出后检查三处：`ENGINE=InnoDB`、`utf8mb4`、`BIGINT` 主键字段（对应 Java 的 Long，序列化要特殊处理）。
+- 6 张表：`user`、`project`、`event_definition`、`event_log`、`event_daily_stat`、`alarm`
+- 外键：**无**（原 schema 里没有定义任何 relation）
+- 索引：`event_log` 4 个、`event_daily_stat` 1 个、`project.project_id` 唯一、`user` 的 `username/phone/email` 唯一
+- 已实测导入本地 MySQL 8 并核对过索引清单
+
+本地库：`tracega_java`（与 Node 版的 `tracega` 分开，便于两个服务同时跑做差分）。
+
 
 ## 1. 模块对照
 
