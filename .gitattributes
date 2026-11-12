@@ -2,3 +2,4 @@
 *.sh text eol=lf
 *.bat text eol=crlf
 *.java text eol=lf
+scripts/*.sh linguist-detectable=false
