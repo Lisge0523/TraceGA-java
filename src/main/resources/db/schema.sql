@@ -1,0 +1,7 @@
+﻿-- 表结构来源：TraceGA/packages/trace-server/prisma/schema.prisma
+-- 生成方式（一次性）：
+--   cd TraceGA/packages/trace-server
+--   npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > ../../java-server/src/main/resources/db/schema.sql
+--
+-- 6 张表：user、project、event_definition、event_log、event_daily_stat、alarm
+-- 生成后请检查：ENGINE=InnoDB / utf8mb4 / BIGINT 主键（Java 侧对应 Long）

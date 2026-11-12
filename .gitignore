@@ -1,0 +1,23 @@
+# build
+target/
+*.class
+mvnw
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.DS_Store
+
+# runtime
+logs/
+*.log
+.env
+.env.*
+
+# local db / artifacts
+*.sql.bak
+data/
